@@ -7,10 +7,10 @@
         @method('PATCH')
         <div class="container">
             <div class="row">
-                <div class="col-sm">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="role">Tipe</label>
-                        <select class="form-control select2 @error('types') is-invalid @enderror" name="types" required>
+                        <select class="form-control select2 @error('types') is-invalid @enderror" name="types" disabled>
                             <option selected disabled>Pilih Tipe</option>
                             <option value="Pengurus" @if ($santri->types == 'Pengurus') selected @endif>Pengurus</option>
                             <option value="Santri" @if ($santri->types == 'Santri') selected @endif>Santri</option>
@@ -23,6 +23,74 @@
                         @enderror
                     </div>
                 </div>
+            </div>
+            @if($santri->types == 'Pengurus')
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="name">Nama </label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $santri->name) }}">
+
+                        @error('name')
+                        <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="birth_date">Tanggal Lahir </label>
+                        <input type="date" class="form-control @error('birth_date') is-invalid @enderror" name="birth_date" value="{{ old('birth_date', $santri->birth_date) }}">
+
+                        @error('birth_date')
+                        <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="birth_place">Tempat Lahir </label>
+                        <input type="text" class="form-control @error('birth_place') is-invalid @enderror" name="birth_place" value="{{ old('birth_place', $santri->birth_place) }}">
+
+                        @error('birth_place')
+                        <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="address">Alamat </label>
+                            <textarea class="form-control @error('address') is-invalid @enderror" name="address">{{ old('address', $santri->address) }}</textarea>
+
+                            @error('address')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label for="phone">No. HP</label>
+                            <input type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $santri->phone) }}">
+
+                            @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            @else
+            <div class="row">
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="name">Nama Santri</label>
@@ -245,30 +313,12 @@
                     @endif
                 </div>
             </div>
+            @endif
             <div class="form-group">
                 <button class="btn btn-primary">Update</button>
                 <a href="{{ route('santri.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </form>
 
 @endsection
