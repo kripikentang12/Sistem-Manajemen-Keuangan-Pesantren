@@ -23,7 +23,7 @@
         <div class="col-12 col-md-3 col-lg-3">
             <div class="pricing">
                 <div class="pricing-title">
-                    Biaya SPP
+                    Biaya Syahriah (SPP)
                 </div>
                 <div class="pricing-padding">
                     <div class="pricing-price">

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
+use App\Models\CashBook;
+use App\Models\OrderSyahriah;
 use App\Models\Syahriah;
 use App\Models\User;
 use Exception;
@@ -13,17 +16,17 @@ class SyahriahController extends Controller
     /**
      * Create a new AuthController instance.
      *
-     * @return void
-     */
-    public function __construct() {
-        $this->middleware('auth:api');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+//     * @return void
+//     */
+//    public function __construct() {
+//        $this->middleware('auth:api');
+//    }
+//
+//    /**
+//     * Display a listing of the resource.
+//     *
+//     * @return \Illuminate\Http\Response
+//     */
     public function index_history(Request $request)
     {
         try {
@@ -44,7 +47,7 @@ class SyahriahController extends Controller
                                 ->orderBy('date', 'DESC')
                                 ->orderBy('created_at', 'DESC')
                                 ->paginate($per_page);
-      
+
             $response = [
                 'status'     => 'success',
                 'message'    => 'Syahriah query get success',
@@ -59,7 +62,7 @@ class SyahriahController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'status'  => 'error',
-                'message' => $e->getMessage()                
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -75,7 +78,7 @@ class SyahriahController extends Controller
             $now  = (int) date('Y');
             $user = User::findOrFail(auth()->id());
             $search = $request->search;
-                         
+
             $jan = Syahriah::select('date', 'month', 'year', 'spp')
                 ->where([
                     'santri_id' => $user->santri_id,
@@ -176,7 +179,36 @@ class SyahriahController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'status'  => 'error',
-                'message' => $e->getMessage()                
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function update_status(Request $request){
+        try {
+            $syahriah_id = $request->id;
+            $syahriah = Syahriah::with('santris')->where('id',$syahriah_id)->first();
+            $syahriah->status = 'Sudah Dibayar';
+            if ($syahriah->save()){
+                $order = OrderSyahriah::where('syahriah_id',$syahriah_id)->first();
+                $order->payment_status = 2;
+                $order->save();
+                CashBook::create([
+                    'date' => now(),
+                    'note' => 'Pembayaran Syahriah/SPP ' . $syahriah->santris->name,
+                    'debit' => $syahriah->spp,
+                    'syahriah_id' => $syahriah->id
+                ]);
+            }
+            $response = [
+                'status'     => 'success',
+                'message'    => 'Syahriah (SPP) payment success',
+            ];
+            return response()->json($response, 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage()
             ], 500);
         }
     }

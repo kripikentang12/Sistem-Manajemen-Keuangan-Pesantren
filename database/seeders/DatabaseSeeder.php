@@ -15,10 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\Santri::factory()->create();
         // \App\Models\User::factory()->create();
-        $this->call(SantrisTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
-        $this->call(CostsTableSeeder::class);
-        \App\Models\InMail::factory()->create();
-        \App\Models\OutMail::factory()->create();
+//        $this->call(SantrisTableSeeder::class);
+//        $this->call(UsersTableSeeder::class);
+//        $this->call(CostsTableSeeder::class);
+        $this->call(OrdersTableSeeder::class);
     }
 }

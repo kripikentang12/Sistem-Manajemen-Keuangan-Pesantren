@@ -1,14 +1,14 @@
 <?php
 
-use \App\Http\Controllers\Web\CashBookController;
-use \App\Http\Controllers\Web\CostController;
-use App\Http\Controllers\Web\LogActivityController;
+use App\Http\Controllers\Web\CashBookController;
+use App\Http\Controllers\Web\CostController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\InMailController;
+use App\Http\Controllers\Web\LogActivityController;
 use App\Http\Controllers\Web\OutMailController;
-use \App\Http\Controllers\Web\RegistrationCostController;
+use App\Http\Controllers\Web\RegistrationCostController;
 use App\Http\Controllers\Web\SantriController;
-use \App\Http\Controllers\Web\SyahriahController;
+use App\Http\Controllers\Web\SyahriahController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pembayaran-pendaftaran/create', [RegistrationCostController::class, 'create'])->name('registration.create');
     Route::post('pembayaran-pendaftaran', [RegistrationCostController::class, 'store'])->name('registration.store');
     Route::get('pembayaran-pendaftaran/print/{id}', [RegistrationCostController::class, 'print'])->name('registration.print');
-    Route::delete('pembayaran-pendaftaran/{id}', [RegistrationCostController::class, 'destroy'])->name('registration.destroy');    
+    Route::delete('pembayaran-pendaftaran/{id}', [RegistrationCostController::class, 'destroy'])->name('registration.destroy');
 
     // Syahriah (SPP)
     Route::get('syahriah', [SyahriahController::class, 'index'])->name('syahriah.index');
@@ -67,6 +67,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('buku-kas/credit', [CashBookController::class, 'storeCredit'])->name('buku-kas.credit.store');
     Route::delete('buku-kas/{id}', [CashBookController::class, 'destroy'])->name('buku-kas.destroy');
 
-    Route::resource('surat-masuk', InMailController::class);
-    Route::resource('surat-keluar', OutMailController::class);
 });

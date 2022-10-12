@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col-sm-10">
                 <div class="form-group">
-                    @if ($santri->photo != null)            
-                        <img src="{{ '/storage/photo/' . $santri->photo }}" alt="Profile Image Santri" class="rounded-circle" width="200" 
+                    @if ($santri->photo != null)
+                        <img src="{{ '/storage/photo/' . $santri->photo }}" alt="Profile Image Santri" class="rounded-circle" width="200"
                         style="position: relative;width: 200px;height: 200px;overflow: hidden;">
                     @else
                         <img alt="Profile Image Santri" src="{{ asset('assets/img/avatar/avatar-1.png') }}" class="rounded-circle" width="200">
@@ -33,7 +33,7 @@
                     <h4>{{ $santri->birth_place }}</h4>
                 </div>
             </div>
-            <div class="col-sm">                   
+            <div class="col-sm">
                 <div class="form-group">
                     <label for="birth_date">Tanggal Lahir Santri</label>
                     <h4>{{ \Carbon\Carbon::parse($santri->birth_date)->isoFormat('D MMMM Y') }}</h4>
@@ -96,7 +96,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">            
+        <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="mother_name">Nama Ibu Santri</label>
@@ -131,20 +131,4 @@
             </div>
         </div>
     </div>
-
-    
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
 @endsection

@@ -6,12 +6,14 @@ use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\CashBook;
 use App\Models\Cost;
+use App\Models\OrderSyahriah;
 use App\Models\Santri;
 use App\Models\Syahriah;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class SyahriahController extends Controller
 {
@@ -35,15 +37,17 @@ class SyahriahController extends Controller
         $now  = (int) date('Y');
         $role = Auth::user()->role;
         $santri_id = Auth::user()->santris->id;
+        $whereSyahriah = [];
         $where = ['types' => 'Santri'];
         if ($role == 'Santri'){
             $where['id'] = $santri_id;
+            $whereSyahriah['santri_id'] = $santri_id;
         }
         $data = Santri::with('syahriahs')->where($where)->get();
         $year = $request->year;
         if ($year) $now = $year;
 
-        $syahriahs = Syahriah::with('santris')->latest()->paginate(10);
+        $syahriahs = Syahriah::with('santris','orders')->where($whereSyahriah)->latest()->paginate(10);
         $keyword = $request->keyword;
         if ($keyword)
             $syahriahs = Syahriah::with('santris')
@@ -103,19 +107,27 @@ class SyahriahController extends Controller
             'month'     => $request->month,
             'year'      => $request->year,
             'santri_id' => $request->santri_id,
-            'spp'       => $request->spp
+            'spp'       => $request->spp,
+            'status'    => 'Menunggu Pembayaran'
+        ]);
+
+        $order = OrderSyahriah::create([
+            'number' => Str::random(8),
+            'total_price' => $request->spp,
+            'payment_status' => 1,
+            'syahriah_id' => $syahriah->id
         ]);
 
         $santri = Syahriah::with('santris')
                 ->where('santri_id', $request->santri_id)
                 ->first();
-
-        CashBook::create([
-            'date' => now(),
-            'note' => 'Pembayaran Syahriah/SPP ' . $santri->santris->name,
-            'debit' => $request->spp,
-            'syahriah_id' => $syahriah->id
-        ]);
+//
+//        CashBook::create([
+//            'date' => now(),
+//            'note' => 'Pembayaran Syahriah/SPP ' . $santri->santris->name,
+//            'debit' => $request->spp,
+//            'syahriah_id' => $syahriah->id
+//        ]);
 
         LogActivity::addToLog('Bayar Syahriah (SPP) ' . $santri->santris->name . ' ('. $request->month . ' ' . $request->year .')');
         return redirect()->route('syahriah.index')

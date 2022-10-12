@@ -22,4 +22,8 @@ class Syahriah extends Model
     {
         return $this->hasOne(CashBook::class);
     }
+    public function orders()
+    {
+        return $this->hasOne(OrderSyahriah::class);
+    }
 }
