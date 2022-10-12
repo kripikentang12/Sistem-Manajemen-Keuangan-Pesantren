@@ -20,22 +20,23 @@
                 </div>
             </div>
         </div>
+        @if($santri->types == 'Pengurus')
         <div class="row">
             <div class="col-sm">
                 <div class="form-group">
-                    <label for="name">Nama Santri</label>
+                    <label for="name">Nama</label>
                     <h4>{{ $santri->name }}</h4>
                 </div>
             </div>
             <div class="col-sm">
                 <div class="form-group">
-                    <label for="birth_place">Tempat Lahir Santri</label>
+                    <label for="birth_place">Tempat Lahir</label>
                     <h4>{{ $santri->birth_place }}</h4>
                 </div>
             </div>
             <div class="col-sm">
                 <div class="form-group">
-                    <label for="birth_date">Tanggal Lahir Santri</label>
+                    <label for="birth_date">Tanggal Lahir</label>
                     <h4>{{ \Carbon\Carbon::parse($santri->birth_date)->isoFormat('D MMMM Y') }}</h4>
                 </div>
             </div>
@@ -43,17 +44,52 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="phone">No. HP Santri</label>
+                    <label for="phone">No. HP</label>
                     <h4>{{ $santri->phone }}</h4>
                 </div>
             </div>
             <div class="col-sm-8">
                 <div class="form-group">
-                    <label for="address">Alamat Santri</label>
+                    <label for="address">Alamat</label>
                     <h4>{{ $santri->address }}</h4>
                 </div>
             </div>
         </div>
+        @else
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="name">Nama Santri</label>
+                        <h4>{{ $santri->name }}</h4>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="birth_place">Tempat Lahir Santri</label>
+                        <h4>{{ $santri->birth_place }}</h4>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label for="birth_date">Tanggal Lahir Santri</label>
+                        <h4>{{ \Carbon\Carbon::parse($santri->birth_date)->isoFormat('D MMMM Y') }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="phone">No. HP Santri</label>
+                        <h4>{{ $santri->phone }}</h4>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="address">Alamat Santri</label>
+                        <h4>{{ $santri->address }}</h4>
+                    </div>
+                </div>
+            </div>
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
@@ -130,5 +166,6 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 @endsection

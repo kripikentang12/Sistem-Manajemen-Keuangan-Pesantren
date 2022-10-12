@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderRegcost;
 use App\Models\OrderSyahriah;
 use App\Services\Midtrans\CreateSnapTokenService;
 use Illuminate\Http\Request;
@@ -35,6 +36,31 @@ class OrderController extends Controller
 //                'message'    => 'Snap token already exist',
 //            ];
 //            return response()->json($response, 200);
+        } catch (Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function show2(Request $request)
+    {
+        try {
+            $regcost_id = $request->id;
+            $order = OrderRegcost::where('registration_cost_id',$regcost_id)->first();
+            $midtrans = new CreateSnapTokenService($order);
+            $snapToken = $midtrans->getSnapToken2($regcost_id);
+
+            $order->snap_token = $snapToken;
+            $order->save();
+
+            $response = [
+                'status'     => 'success',
+                'message'    => 'Generate snap token get success',
+                'data'  => ['token' => $snapToken]
+            ];
+            return response()->json($response, 200);
         } catch (Exception $e){
             return response()->json([
                 'status' => 'error',

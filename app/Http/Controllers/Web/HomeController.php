@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class HomeController extends Controller
 {
@@ -35,6 +36,51 @@ class HomeController extends Controller
         $credit_month     = DB::table('cash_books')->where('date','like','%'.$month.'%')->sum(DB::raw('credit'));
         $balance_month    = DB::table('cash_books')->where('date','like','%'.$month.'%')->sum(DB::raw('debit - credit'));
 
+        $chart1_options = [
+            'chart_title' => 'Pemasukan per Bulan',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\CashBook',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'month',
+            'chart_type' => 'bar',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'debit',
+            'filter_field' => 'created_at',
+            'filter_days' => 30,
+            'chart_color' => '30,144,255',
+        ];
+        $chart1 = new LaravelChart($chart1_options);
+
+        $chart2_options = [
+            'chart_title' => 'Pengeluaran per Bulan',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\CashBook',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'month',
+            'chart_type' => 'bar',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'credit',
+            'filter_field' => 'created_at',
+            'filter_days' => 30,
+            'chart_color' => '255,20,147',
+        ];
+        $chart2 = new LaravelChart($chart2_options);
+
+        $chart3_options = [
+            'chart_title' => 'Saldo Kas per Bulan',
+            'report_type' => 'group_by_date',
+            'model' => 'App\Models\CashBook',
+            'group_by_field' => 'created_at',
+            'group_by_period' => 'month',
+            'chart_type' => 'bar',
+            'aggregate_function' => 'sum',
+            'aggregate_field' => 'amount',
+            'filter_field' => 'created_at',
+            'filter_days' => 30,
+            'chart_color' => '34,139,34',
+        ];
+        $chart3 = new LaravelChart($chart3_options);
+
         return view('home', compact(
             'santris',
             'users',
@@ -44,6 +90,9 @@ class HomeController extends Controller
             'debit_month',
             'credit_month',
             'balance_month',
+            'chart1',
+            'chart2',
+            'chart3',
         ));
     }
 }

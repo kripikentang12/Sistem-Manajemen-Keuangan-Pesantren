@@ -29,7 +29,7 @@ class CashBookController extends Controller
     public function index(Request $request)
     {
         $data       = CashBook::orderBy('date', 'DESC')->orderBy('created_at', 'DESC')->paginate(10);
-        $balance    = DB::table('cash_books')->sum(DB::raw('debit - credit'));        
+        $balance    = DB::table('cash_books')->sum(DB::raw('debit - credit'));
         $keyword    = $request->keyword;
         if ($keyword)
             $data   = CashBook::where('date', 'LIKE', "%$keyword%")
@@ -66,7 +66,13 @@ class CashBookController extends Controller
             'debit' => 'required|numeric|min:1'
         ]);
 
-        CashBook::create($request->all());
+//        CashBook::create($request->all());
+        CashBook::create([
+            'date' => $request->date,
+            'note' => $request->note,
+            'debit' => $request->debit,
+            'amount' => $request->debit
+        ]);
 
         LogActivity::addToLog('Tambah Pemasukan Kas');
         return redirect()->route('buku-kas.index')
@@ -109,7 +115,13 @@ class CashBookController extends Controller
                 ->with('alert', 'Saldo tidak mencukupi.');
         }
 
-        CashBook::create($request->all());
+//        CashBook::create($request->all());
+        CashBook::create([
+            'date' => $request->date,
+            'note' => $request->note,
+            'credit' => $request->credit,
+            'amount' => '-'.$request->credit
+        ]);
 
         LogActivity::addToLog('Tambah Pengeluaran Kas');
         return redirect()->route('buku-kas.index')
@@ -127,7 +139,7 @@ class CashBookController extends Controller
         if (Gate::allows('admin')) {
             $cash = CashBook::findOrFail($id);
             $cash->delete();
-    
+
             LogActivity::addToLog('Hapus Data Kas ('.$cash->note.')');
             return redirect()->route('buku-kas.index')
                 ->with('alert','Data Kas berhasil dihapus.');

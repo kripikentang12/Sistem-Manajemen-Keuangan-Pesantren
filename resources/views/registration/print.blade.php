@@ -8,7 +8,7 @@
     <title>Bukti Pembayaran Pendaftaran Santri Baru</title>
 
     <!-- Favicon -->
-    <link rel="favicon icon" href="/assets/img/favicon.ico" type="image/x-icon">  
+    <link rel="favicon icon" href="/assets/img/aljazary.png" type="image/x-icon">
 
     <!-- Invoice styling -->
     <style>
@@ -127,12 +127,12 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/ponpes_logo.png'))) }}" alt="logo" style="width: 50%; max-width: 70px" />
+                                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/img/aljazary.png'))) }}" alt="logo" style="width: 100%; max-width: 70px" />
                             </td>
 
                             <td>
-                                <h3><b>Pondok Pesantren Ash-Shomadiyah Komplek Tengah</b><br>
-                                Jalan KH. Agus Salim No. 44 Makamagung, Tuban (62313)</h3>
+                                <h3><b>Pondok Pesantren Imam Al Jazary Takalar</b><br>
+                                    Mangadu, Mangara Bombang, Kab. Takalar, Sulawesi Selatan (92252)</h3>
                             </td>
                         </tr>
                     </table>

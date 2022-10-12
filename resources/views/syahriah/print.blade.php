@@ -132,7 +132,7 @@
 
                             <td>
                                 <h3><b>Pondok Pesantren Imam Al Jazary Takalar</b><br>
-                                Jalan KH. Agus Salim No. 44 Makamagung, Tuban (62313)</h3>
+                                    Mangadu, Mangara Bombang, Kab. Takalar, Sulawesi Selatan (92252)</h3>
                             </td>
                         </tr>
                     </table>

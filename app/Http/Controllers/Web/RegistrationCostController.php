@@ -6,12 +6,15 @@ use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Models\CashBook;
 use App\Models\Cost;
+use App\Models\OrderRegcost;
+use App\Models\OrderSyahriah;
 use App\Models\RegistrationCost;
 use App\Models\Santri;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class RegistrationCostController extends Controller
 {
@@ -32,7 +35,7 @@ class RegistrationCostController extends Controller
      */
     public function index(Request $request)
     {
-        $data       = RegistrationCost::with('santris')->latest()->paginate(10);
+        $data       = RegistrationCost::with('santris','orders')->latest()->paginate(10);
         $keyword    = $request->keyword;
         if ($keyword)
             $data   = RegistrationCost::whereHas('santris', function ($query) use ($keyword) {
@@ -75,20 +78,21 @@ class RegistrationCostController extends Controller
             'santri_id' => $request->santri_id,
             'construction' => $request->construction,
             'facilities' => $request->facilities,
-            'wardrobe' => $request->wardrobe
+            'wardrobe' => $request->wardrobe,
+            'status' => 'Menunggu Pembayaran'
+        ]);
+        $total = $request->construction + $request->facilities + $request->wardrobe;
+
+        $order = OrderRegcost::create([
+            'number' => Str::random(8),
+            'total_price' => $total,
+            'payment_status' => 1,
+            'registration_cost_id' => $regcost->id
         ]);
 
         $santri = RegistrationCost::with('santris')
                 ->where('santri_id', $request->santri_id)
                 ->first();
-        $total = $request->construction + $request->facilities + $request->wardrobe;
-
-        CashBook::create([
-            'date' => now(),
-            'note' => 'Pembayaran Pendaftaran Santri ' . $santri->santris->name,
-            'debit' => $total,
-            'registration_cost_id' => $regcost->id
-        ]);
 
         LogActivity::addToLog('Bayar Pendaftaran ' . $santri->santris->name);
         return redirect()->route('registration.index')

@@ -197,6 +197,7 @@ class SyahriahController extends Controller
                     'date' => now(),
                     'note' => 'Pembayaran Syahriah/SPP ' . $syahriah->santris->name,
                     'debit' => $syahriah->spp,
+                    'amount' => $syahriah->spp,
                     'syahriah_id' => $syahriah->id
                 ]);
             }

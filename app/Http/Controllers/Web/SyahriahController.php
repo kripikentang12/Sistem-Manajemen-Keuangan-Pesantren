@@ -121,13 +121,6 @@ class SyahriahController extends Controller
         $santri = Syahriah::with('santris')
                 ->where('santri_id', $request->santri_id)
                 ->first();
-//
-//        CashBook::create([
-//            'date' => now(),
-//            'note' => 'Pembayaran Syahriah/SPP ' . $santri->santris->name,
-//            'debit' => $request->spp,
-//            'syahriah_id' => $syahriah->id
-//        ]);
 
         LogActivity::addToLog('Bayar Syahriah (SPP) ' . $santri->santris->name . ' ('. $request->month . ' ' . $request->year .')');
         return redirect()->route('syahriah.index')

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\SyahriahController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\RegistrationCostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,4 +41,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function ($router) {
     Route::post('syahriah-status', [SyahriahController::class, 'update_status']);
 
     Route::post('order', [OrderController::class, 'show']);
+    Route::post('order-regcost', [OrderController::class, 'show2']);
+
+    Route::post('regcost-status', [RegistrationCostController::class, 'update_status']);
 });

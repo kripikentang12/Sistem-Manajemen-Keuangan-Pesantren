@@ -22,4 +22,8 @@ class RegistrationCost extends Model
     {
         return $this->hasOne(CashBook::class);
     }
+    public function orders()
+    {
+        return $this->hasOne(OrderRegcost::class);
+    }
 }

@@ -129,6 +129,17 @@
         </div>
     </div>
 </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            {!! $chart1->renderHtml() !!}
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            {!! $chart2->renderHtml() !!}
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+            {!! $chart3->renderHtml() !!}
+        </div>
+    </div>
 @else
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -148,4 +159,13 @@
         </div>
 @endif
 
+@endsection
+
+@section('script')
+    {!! $chart1->renderChartJsLibrary() !!}
+    {!! $chart1->renderJs() !!}
+    {!! $chart2->renderChartJsLibrary() !!}
+    {!! $chart2->renderJs() !!}
+    {!! $chart3->renderChartJsLibrary() !!}
+    {!! $chart3->renderJs() !!}
 @endsection

@@ -13,6 +13,7 @@
         "laravel/framework": "^9.11.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
+        "laraveldaily/laravel-charts": "^0.1.29",
         "midtrans/midtrans-php": "^2.5",
         "tymon/jwt-auth": "^1.0"
     },
