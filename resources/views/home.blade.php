@@ -3,6 +3,7 @@
 @section('content')
 
 @if(Auth::user()->role != 'Santri')
+    @if(Auth::user()->role != 'Pengurus')
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-1">
@@ -35,6 +36,7 @@
         </div>
     </div>
 </div>
+    @endif
 <div class="row">
     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
         <div class="card card-statistic-2">

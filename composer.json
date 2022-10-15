@@ -8,6 +8,7 @@
         "php": "^8.0",
         "barryvdh/laravel-dompdf": "^1.0.0",
         "fruitcake/laravel-cors": "^3.0.0",
+        "fx3costa/laravelchartjs": "^2.9",
         "guzzlehttp/guzzle": "^7.0.1",
         "illuminate/support": "^9.11",
         "laravel/framework": "^9.11.0",

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\CashBook;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
@@ -37,16 +38,14 @@ class HomeController extends Controller
         $balance_month    = DB::table('cash_books')->where('date','like','%'.$month.'%')->sum(DB::raw('debit - credit'));
 
         $chart1_options = [
-            'chart_title' => 'Pemasukan per Bulan',
+            'chart_title' => 'Pemasukan per Tahun',
             'report_type' => 'group_by_date',
             'model' => 'App\Models\CashBook',
-            'group_by_field' => 'created_at',
+            'group_by_field' => "created_at",
             'group_by_period' => 'month',
             'chart_type' => 'bar',
             'aggregate_function' => 'sum',
             'aggregate_field' => 'debit',
-            'filter_field' => 'created_at',
-            'filter_days' => 30,
             'chart_color' => '30,144,255',
         ];
         $chart1 = new LaravelChart($chart1_options);
@@ -60,8 +59,6 @@ class HomeController extends Controller
             'chart_type' => 'bar',
             'aggregate_function' => 'sum',
             'aggregate_field' => 'credit',
-            'filter_field' => 'created_at',
-            'filter_days' => 30,
             'chart_color' => '255,20,147',
         ];
         $chart2 = new LaravelChart($chart2_options);
@@ -75,8 +72,6 @@ class HomeController extends Controller
             'chart_type' => 'bar',
             'aggregate_function' => 'sum',
             'aggregate_field' => 'amount',
-            'filter_field' => 'created_at',
-            'filter_days' => 30,
             'chart_color' => '34,139,34',
         ];
         $chart3 = new LaravelChart($chart3_options);
@@ -94,5 +89,11 @@ class HomeController extends Controller
             'chart2',
             'chart3',
         ));
+    }
+
+    public function month($number){
+        $dateObj   = \DateTime::createFromFormat('!m', $number);
+        $monthName = $dateObj->format('F'); // March
+        return $monthName;
     }
 }

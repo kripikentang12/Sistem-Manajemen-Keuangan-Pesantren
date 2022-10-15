@@ -19,10 +19,18 @@
                     <div class="form-group">
                         <label for="santri_id">Nama Santri</label>
                         <select class="form-control select2 @error('santri_id') is-invalid @enderror" name="santri_id" required>
-                            <option selected disabled>Pilih Santri</option>
+                            @if(Auth::user()->role == 'Santri')
+                                @php
+                                    $santri = \App\Models\Santri::findOrFail(Auth::user()->santri_id);
+                                @endphp
+                                <option value="{{ $santri->id }}" selected>{{ $santri->name }}</option>
+                            @else
+                                <option selected disabled>Pilih Santri</option>
                             @foreach ($data as $santri)
                                 <option value="{{ $santri->id }}">{{ $santri->name }}</option>
                             @endforeach
+                            @endif
+
                         </select>
 
                         @error('santri_id')
