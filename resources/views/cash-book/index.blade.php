@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-8">
             <a href="{{ route('buku-kas.debit.create') }}" class="btn btn-info mr-3">Tambah Pemasukan</a>
-            <a href="{{ route('buku-kas.credit.create') }}" class="btn btn-warning">Tambah Pengeluaran</a><br><br>                                        
+            <a href="{{ route('buku-kas.credit.create') }}" class="btn btn-warning">Tambah Pengeluaran</a><br><br>
         </div>
         <div class="col-md-4 mb-2">
             <form action="#" class="flex-sm">
@@ -43,6 +43,7 @@
                     <th width="30%">Keterangan</th>
                     <th>Pemasukan</th>
                     <th>Pengeluaran</th>
+                    <th>Image</th>
                     <th width="5%">Action</th>
                 </tr>
             </thead>
@@ -54,11 +55,15 @@
                         <td>{{ $result->note }}</td>
                         <td>Rp. {{ number_format($result->debit, 2, ',', '.') }}</td>
                         <td>Rp. {{ number_format($result->credit, 2, ',', '.') }}</td>
+                        <td>@isset($result->image)<a href="{{ url('image/'.$result->image) }}" target="_blank">
+                                <img src="{{ url('image/'.$result->image) }}"
+                                     style="height: 100px; width: 150px;">
+                            </a>@endisset</td>
                         <td align="center">
                             @if (Auth::user()->role == 'Pengurus')
                                 <small class="text-warning">No Action</small>
                             @else
-                                <a href="javascript:void(0)" id="btn-delete" class="btn btn-sm btn-danger" onclick="deleteData('{{ $result->id }}')" data-toggle="modal" data-target="#deleteKasModal"><i class="fas fa-trash"></i></a>                                
+                                <a href="javascript:void(0)" id="btn-delete" class="btn btn-sm btn-danger" onclick="deleteData('{{ $result->id }}')" data-toggle="modal" data-target="#deleteKasModal"><i class="fas fa-trash"></i></a>
                             @endif
                         </td>
                     </tr>

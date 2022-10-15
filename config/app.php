@@ -177,9 +177,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        //chartjs
-        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class
-
     ],
 
     /*

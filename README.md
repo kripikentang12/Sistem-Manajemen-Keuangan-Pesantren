@@ -24,13 +24,12 @@
 - Admin Panel
   - Login
   - Logout
-  - Manajamen Data Santri
+  - Manajamen Data Santri dan Pengurus
   - Manajemen Data Pengguna Sistem
   - Manajemen Biaya Pembayaran Pesantren
-  - Manajemen Biaya Pembayaran Pendaftaran Santri
-  - Manajemen Biaya Pembayaran Syahriah (SPP) Santri
+  - Manajemen Biaya Pembayaran Pendaftaran Santri dengan Payment Gateway (Midtrans)
+  - Manajemen Biaya Pembayaran Syahriah (SPP) Santri dengan Payment Gateway (Midtrans)
   - Buku Kas Pesantren
-  - Manajemen Surat Masuk dan Surat Keluar
   - Log Aktivitas Pengguna Sistem
 - API
   - Login
@@ -39,6 +38,8 @@
   - Ubah Password
   - Update Profil
   - Histori Pembayaran Syahriah (SPP)
+  - Update Status Pembayaran Pendaftaran Santri
+  - Update Status Pembayaran Syahriah (SPP) Santri
 
 Note: User Role is <b>Administrator, Pengurus, Santri</b>
 
@@ -60,11 +61,11 @@ Note: User Role is <b>Administrator, Pengurus, Santri</b>
 ### ⚡️ Installation
 1. Clone GitHub repo for this project locally
 ```bash
-git clone https://github.com/dibaliqaja/pesantren-cms.git
+git clone https://github.com/kripikentang12/Sistem-Manajemen-Keuangan-Pesantren.git
 ```
 2. Change directory in project which already clone
 ```bash
-cd pesantren-cms
+cd Sistem-Manajemen-Keuangan-Pesantren
 ```
 3. Install Composer dependencies
 ```bash
@@ -93,11 +94,19 @@ DB_DATABASE={database-name}
 DB_USERNAME={username-database}
 DB_PASSWORD={password-database}
 ```
-9. Migrate the database
+9. Buka `.env` lalu ubah baris berikut sesuai dengan api midtrans kamu**
+
+```bash
+MIDTRANS_IS_PRODUCTION=false
+MIDTRANS_MERCHAT_ID=xxxxxx
+MIDTRANS_CLIENT_KEY=SB-Mid-client-xxxxx
+MIDTRANS_SERVER_KEY=SB-Mid-server-xxxxx
+```
+10. Migrate the database
 ```bash
 php artisan migrate
 ```
-10. Create a symbolic link from public/storage to storage/app/public
+11. Create a symbolic link from public/storage to storage/app/public
 ```bash
 php artisan storage:link
 ```
@@ -105,7 +114,7 @@ php artisan storage:link
 ```bash
 php artisan db:seed
 ```
-12. Running project
+13. Running project
 ```bash
 php artisan serve
 ```

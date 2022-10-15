@@ -63,16 +63,25 @@ class CashBookController extends Controller
         $this->validate($request, [
             'date' => 'required|date',
             'note' => 'required|string',
-            'debit' => 'required|numeric|min:1'
+            'debit' => 'required|numeric|min:1',
+            'image' => 'required|file'
         ]);
 
 //        CashBook::create($request->all());
-        CashBook::create([
-            'date' => $request->date,
-            'note' => $request->note,
-            'debit' => $request->debit,
-            'amount' => $request->debit
-        ]);
+        $data= new CashBook();
+
+        if($request->image){
+            $file= $request->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('image'), $filename);
+            $data['image']= $filename;
+        }
+
+        $data['date'] = $request->date;
+        $data['note'] = $request->note;
+        $data['debit'] = $request->debit;
+        $data['amount'] = $request->debit;
+        $data->save();
 
         LogActivity::addToLog('Tambah Pemasukan Kas');
         return redirect()->route('buku-kas.index')
@@ -106,7 +115,8 @@ class CashBookController extends Controller
         $this->validate($request, [
             'date' => 'required|date',
             'note' => 'required|string',
-            'credit' => 'required|numeric|min:1'
+            'credit' => 'required|numeric|min:1',
+            'image' => 'required|file'
         ]);
 
         $balance    = DB::table('cash_books')->sum(DB::raw('debit - credit'));
@@ -116,12 +126,26 @@ class CashBookController extends Controller
         }
 
 //        CashBook::create($request->all());
-        CashBook::create([
-            'date' => $request->date,
-            'note' => $request->note,
-            'credit' => $request->credit,
-            'amount' => '-'.$request->credit
-        ]);
+//        CashBook::create([
+//            'date' => $request->date,
+//            'note' => $request->note,
+//            'credit' => $request->credit,
+//            'amount' => '-'.$request->credit
+//        ]);
+        $data = new CashBook();
+
+        if($request->image){
+            $file= $request->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('image'), $filename);
+            $data['image']= $filename;
+        }
+
+        $data['date'] = $request->date;
+        $data['note'] = $request->note;
+        $data['credit'] = $request->credit;
+        $data['amount'] = $request->credit;
+        $data->save();
 
         LogActivity::addToLog('Tambah Pengeluaran Kas');
         return redirect()->route('buku-kas.index')
