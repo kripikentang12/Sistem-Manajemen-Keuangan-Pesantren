@@ -20,8 +20,13 @@
                 </a>
             </li>
             @endif
-            <li class="menu-header">Keuangan</li>
             @if(Auth::user()->role != 'Santri')
+            <li class="{{ (request()->routeIs('donatur*')) ? 'active' : '' }}">
+                <a href="{{ route('donatur.index') }}" class="nav-link">
+                    <i class="fas fa-wallet"></i><span>Donatur</span>
+                </a>
+            </li>
+            <li class="menu-header">Keuangan</li>
             <li class="{{ (request()->routeIs('biaya*')) ? 'active' : '' }}">
                 <a href="{{ route('biaya.index') }}" class="nav-link">
                     <i class="far fa-file-alt"></i><span>Biaya Pembayaran</span>

@@ -3,10 +3,9 @@
 use App\Http\Controllers\Web\CashBookController;
 use App\Http\Controllers\Web\CostController;
 use App\Http\Controllers\Web\HomeController;
-use App\Http\Controllers\Web\InMailController;
 use App\Http\Controllers\Web\LogActivityController;
-use App\Http\Controllers\Web\OutMailController;
 use App\Http\Controllers\Web\RegistrationCostController;
+use App\Http\Controllers\Web\DonaturController;
 use App\Http\Controllers\Web\SantriController;
 use App\Http\Controllers\Web\SyahriahController;
 use App\Http\Controllers\Web\UserController;
@@ -38,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::resource('santri', SantriController::class);
     Route::resource('pengguna', UserController::class);
+    Route::resource('donatur', DonaturController::class);
     Route::get('log-aktivitas', [LogActivityController::class, 'index'])->name('logs.index');
 
     // Biaya Pembayaran Pesantren
