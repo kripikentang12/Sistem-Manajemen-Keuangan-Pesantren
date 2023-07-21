@@ -29,7 +29,7 @@ class CashBookController extends Controller
     public function index(Request $request)
     {
         $data       = CashBook::orderBy('date', 'DESC')->orderBy('created_at', 'DESC')->paginate(10);
-        $balance    = DB::table('cash_books')->sum(DB::raw('debit - credit'));
+        $balance    = DB::table('cash_books')->sum(DB::raw('credit - debit'));
         $keyword    = $request->keyword;
         if ($keyword)
             $data   = CashBook::where('date', 'LIKE', "%$keyword%")
@@ -47,60 +47,8 @@ class CashBookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createDebit()
-    {
-        return view('cash-book.debit');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeDebit(Request $request)
-    {
-        $this->validate($request, [
-            'date' => 'required|date',
-            'note' => 'required|string',
-            'debit' => 'required|numeric|min:1',
-            'image' => 'required|file'
-        ]);
-
-//        CashBook::create($request->all());
-        $data= new CashBook();
-
-        if($request->image){
-            $file= $request->file('image');
-            $filename= date('YmdHi').$file->getClientOriginalName();
-            $file-> move(public_path('image'), $filename);
-            $data['image']= $filename;
-        }
-
-        $data['date'] = $request->date;
-        $data['note'] = $request->note;
-        $data['debit'] = $request->debit;
-        $data['amount'] = $request->debit;
-        $data->save();
-
-        LogActivity::addToLog('Tambah Pemasukan Kas');
-        return redirect()->route('buku-kas.index')
-            ->with('alert', 'Pemasukan berhasil ditambahkan.');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function createCredit()
     {
-        $balance    = DB::table('cash_books')->sum(DB::raw('debit - credit'));
-        if ($balance <= 0) {
-            return redirect()->route('buku-kas.index')
-                ->with('alert', 'Saldo tidak mencukupi.');
-        }
-
         return view('cash-book.credit');
     }
 
@@ -119,7 +67,59 @@ class CashBookController extends Controller
             'image' => 'required|file'
         ]);
 
-        $balance    = DB::table('cash_books')->sum(DB::raw('debit - credit'));
+//        CashBook::create($request->all());
+        $data= new CashBook();
+
+        if($request->image){
+            $file= $request->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('image'), $filename);
+            $data['image']= $filename;
+        }
+
+        $data['date'] = $request->date;
+        $data['note'] = $request->note;
+        $data['credit'] = $request->credit;
+        $data['amount'] = $request->credit;
+        $data->save();
+
+        LogActivity::addToLog('Tambah Pemasukan Kas');
+        return redirect()->route('buku-kas.index')
+            ->with('alert', 'Pemasukan berhasil ditambahkan.');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createDebit()
+    {
+        $balance    = DB::table('cash_books')->sum(DB::raw('credit - debit'));
+        if ($balance <= 0) {
+            return redirect()->route('buku-kas.index')
+                ->with('alert', 'Saldo tidak mencukupi.');
+        }
+
+        return view('cash-book.debit');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeDebit(Request $request)
+    {
+        $this->validate($request, [
+            'date' => 'required|date',
+            'note' => 'required|string',
+            'debit' => 'required|numeric|min:1',
+            'image' => 'required|file'
+        ]);
+
+        $balance    = DB::table('cash_books')->sum(DB::raw('credit - debit'));
         if ($request->credit > $balance) {
             return redirect()->route('buku-kas.index')
                 ->with('alert', 'Saldo tidak mencukupi.');
@@ -143,8 +143,8 @@ class CashBookController extends Controller
 
         $data['date'] = $request->date;
         $data['note'] = $request->note;
-        $data['credit'] = $request->credit;
-        $data['amount'] = $request->credit;
+        $data['debit'] = $request->debit;
+        $data['amount'] = $request->debit;
         $data->save();
 
         LogActivity::addToLog('Tambah Pengeluaran Kas');

@@ -24,7 +24,7 @@ class RegistrationCostController extends Controller
                 CashBook::create([
                     'date' => now(),
                     'note' => 'Pembayaran Pendaftaran Santri ' . $regcost->santris->name,
-                    'debit' => $regcost->orders->total_price,
+                    'credit' => $regcost->orders->total_price,
                     'amount' => $regcost->orders->total_price,
                     'registration_cost_id' => $regcost->id
                 ]);

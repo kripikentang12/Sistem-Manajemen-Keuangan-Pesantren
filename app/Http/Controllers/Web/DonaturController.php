@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\CashBook;
 use App\Models\Donatur;
 use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
@@ -60,7 +61,14 @@ class DonaturController extends Controller
         $data['name'] = $request->name;
         $data['item'] = $request->item;
         $data['quantity'] = $request->quantity;
-        $data->save();
+        if ($data->save()){
+            $data1= new CashBook();
+            $data1['date'] = $request->date;
+            $data1['note'] = $request->item;
+            $data1['credit'] = $request->quantity;
+            $data1['amount'] = $request->quantity;
+            $data1->save();
+        }
 
         LogActivity::addToLog('Tambah Donatur');
         return redirect()->route('donatur.index')

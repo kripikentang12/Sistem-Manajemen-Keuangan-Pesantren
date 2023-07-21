@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="#" target="_blank">Imam Al Jazary</a>
+            <a href="#" target="_blank"><img src="{{ asset('assets/img/aljazary.jpg') }}" alt="logo" width="50">Imam Al Jazary</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="#" target="_blank"><img src="{{ asset('assets/img/aljazary.jpg') }}" alt="logo" width="50"></a>

@@ -1,5 +1,5 @@
 @extends('layouts.home')
-@section('title_page','Tambah Pengeluaran')
+@section('title_page','Tambah Pemasukan')
 @section('content')
 
     <form action="{{ route('buku-kas.credit.store') }}" method="post" enctype="multipart/form-data">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="credit">Pengeluaran</label>
+                        <label for="credit">Pemasukan</label>
                         <input type="number" min="1" class="form-control @error('credit') is-invalid @enderror" name="credit" value="{{ old('credit') }}" required>
 
                         @error('credit')
@@ -47,7 +47,7 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="note">Bukti Transaksi</label>
-                        <input type="file" class="form-control @error('image') is-invalid @enderror" required name="image">
+                        <input type="file" class="form-control @error('image') is-invalid @enderror" required name="image" accept="image/*">
 
                         @error('image')
                         <span class="invalid-feedback" role="alert">

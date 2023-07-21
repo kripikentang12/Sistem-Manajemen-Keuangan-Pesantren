@@ -196,7 +196,7 @@ class SyahriahController extends Controller
                 CashBook::create([
                     'date' => now(),
                     'note' => 'Pembayaran Syahriah/SPP ' . $syahriah->santris->name,
-                    'debit' => $syahriah->spp,
+                    'kredit' => $syahriah->spp,
                     'amount' => $syahriah->spp,
                     'syahriah_id' => $syahriah->id
                 ]);

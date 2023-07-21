@@ -1,5 +1,5 @@
 @extends('layouts.home')
-@section('title_page','Tambah Pemasukan')
+@section('title_page','Tambah Pengeluaran')
 @section('content')
 
     <form action="{{ route('buku-kas.debit.store') }}" method="post" enctype="multipart/form-data">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="debit">Pemasukan</label>
+                        <label for="debit">Pengeluaran</label>
                         <input type="number" min="1" class="form-control @error('debit') is-invalid @enderror" name="debit" value="{{ old('debit') }}" required>
 
                         @error('debit')
@@ -47,7 +47,7 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label for="note">Bukti Transaksi</label>
-                        <input type="file" class="form-control @error('image') is-invalid @enderror" required name="image">
+                        <input type="file" class="form-control @error('image') is-invalid @enderror" required name="image" accept="image/*">
 
                         @error('image')
                         <span class="invalid-feedback" role="alert">

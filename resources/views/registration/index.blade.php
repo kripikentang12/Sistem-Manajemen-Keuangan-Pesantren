@@ -140,7 +140,13 @@
                                 <a href="{{ route('registration.print', $result->id) }}" type="button" target="_blank" class="btn btn-sm btn-info"><i class="fas fa-print"></i></a>
                             @endif
                                 @if ($result->orders->payment_status == 1)
-                                    <a href="javascript:void(0)" type="button" class="btn btn-sm btn-warning" id="pay-button" onclick="getSnapToken('{{$result->id}}')" data-id="{{$result->id}}" data-name="{{$regist + $data->firstitem()}}" data-total="{{number_format($result->construction+$result->facilities+$result->wardrobe, 2, ',', '.')}}" data-toggle="modal" data-target="#paymentModal"><i class="fa fa-credit-card"></i></a>
+                                    <a href="javascript:void(0)" type="button" class="btn btn-sm btn-warning" id="pay-button" onclick="getSnapToken('{{$result->id}}')" data-id="{{$result->id}}" data-name="{{$regist + $data->firstitem()}}"
+                                       data-pembangunan="{{number_format($result->construction,2,',','.')}}"
+                                       data-fasilitas="{{number_format($result->facilities,2,',','.')}}"
+                                       data-almari="{{number_format($result->wardrobe,2,',','.')}}"
+                                       data-namasantri="{{$result->santris->name}}"
+                                       data-total="{{number_format($result->construction+$result->facilities+$result->wardrobe, 2, ',', '.')}}"
+                                       data-toggle="modal" data-target="#paymentModal"><i class="fa fa-credit-card"></i></a>
                                 @endif
                             @if (Auth::user()->role == 'Administrator')
                                 @if($result->orders->payment_status != 2)
@@ -180,6 +186,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="invoice-box">
+                            <p>Biaya Pendaftaran <span id="reg-name"></p>
                             <table>
                                 <tr class="heading">
                                     <td>Item</td>
@@ -188,8 +195,16 @@
                                 </tr>
 
                                 <tr class="item">
-                                    <td>Biaya Pendaftaran <span id="reg-name"></span>
-                                    <td>Rp. <span id="reg-cost"></span></td>
+                                    <td>Pembangunan </span>
+                                    <td>Rp. <span id="reg-pembangunan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fasilitas </span>
+                                    <td>Rp. <span id="reg-fasilitas"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alokasi Almari </span>
+                                    <td>Rp. <span id="reg-almari"></span></td>
                                 </tr>
 
                                 <tr class="total">
@@ -240,10 +255,16 @@
         var regcost_id
         $(document).on("click", "#pay-button", function () {
             regcost_id = $(this).data('id');
-            var total = $(this).data('tot');
-            var name = $(this).data('name');
+            var total = $(this).data('total');
+            var name = $(this).data('namasantri');
+            var pembangunan = $(this).data('pembangunan');
+            var fasilitas = $(this).data('fasilitas');
+            var almari = $(this).data('almari');
             $("#reg-name").empty().append(name);
             $("#reg-tot").empty().append(total);
+            $("#reg-pembangunan").empty().append(pembangunan);
+            $("#reg-fasilitas").empty().append(fasilitas);
+            $("#reg-almari").empty().append(almari);
         });
 
         var request;
@@ -254,6 +275,7 @@
                 data: {id:id}
             });
             request.done(function (response, textStatus, jqXHR){
+                console.log(response.data)
                 snaptoken = response.data.token
                 $('#pay-reg').attr('onClick', "payment('"+snaptoken+"')");
                 $('#pay-reg').prop("disabled", false);
@@ -270,6 +292,7 @@
             snap.pay(snaptoken, {
                 // Optional
                 onSuccess: function(result) {
+                    console.log(snaptoken)
                     console.log(result)
                     if (result.status_code == '200'){
                         request = $.ajax({
